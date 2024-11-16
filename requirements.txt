@@ -1,0 +1,16 @@
+joblib
+nltk
+numpy
+pandas
+seaborn
+networkx
+scipy
+# wordnet
+wordcloud
+plotly
+textblob
+matplotlib
+gensim
+geopy
+datasketch
+scikit-learn
