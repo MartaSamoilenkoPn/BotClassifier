@@ -15,18 +15,17 @@ import pandas as pd
 async def login():
     """
     Login into Twitter account"""
-    # Prompt user for input
     username = input("Enter your username: ").strip()
     email = input("Enter your email: ").strip()
-    password = getpass("Enter your password: ")  # Hides the password input
+    password = getpass("Enter your password: ") 
 
-    # Initialize client with user agent and language
+
     client = Client(
         user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.6533.120 Safari/537.36",
         language="en-US"
     )
 
-    # Perform the login operation
+
     try:
         await client.login(
             auth_info_1=username,
@@ -45,22 +44,21 @@ async def fetch_updated_user_data(username, client):
     Find Twitter user and fetch him data by username
     """
     try:
-        # Search for the user by screen_name
+
         users = await client.search_user(username, count=1)
         if not users:
             print(f"User not found: {username}")
             return None
         user = users[0]
         username = user.screen_name
-        # Parse the account creation time
         created_at = datetime.strptime(user.created_at, "%a %b %d %H:%M:%S %z %Y")
 
-        # Calculate derived fields
+
         current_time = datetime.now(timezone.utc)
         account_age_days = (current_time - created_at).days
         average_tweets_per_day = user.statuses_count / account_age_days if account_age_days > 0 else 0
 
-        # Format the data to match the model's input structure
+
         user_data = {
             'hour_created': created_at.hour,
             'verified': int(user.is_blue_verified),
@@ -73,7 +71,7 @@ async def fetch_updated_user_data(username, client):
             'account_age_days': account_age_days
         }
 
-        # Convert to a DataFrame for prediction
+
         user_df = pd.DataFrame([user_data])
 
         return user_df, username
